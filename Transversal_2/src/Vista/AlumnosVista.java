@@ -229,21 +229,33 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
 
     private void jBsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBsaveActionPerformed
 
-Alumno A = new Alumno();  
+       Alumno A = new Alumno();  
         try { 
            int D = Integer.parseInt(jTdni.getText());
+           Alumno alu = ad.buscarDni(D);
            String apellido = jTapellido.getText();
            String nombre = jTnombre.getText();
-           if(apellido.matches("^[a-zA-Z]+$")&& nombre.matches("^[a-zA-Z]+$")){
+           if(apellido.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$")&& nombre.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$")){
               boolean L = estado.isSelected();
               LocalDate vaso = Jtdate.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                  
               A.setDni(D);
               A.setApellido(apellido);
               A.setNombre(nombre);
-              A.setEstado(isIcon);
+              A.setEstado(L);
               A.setFecha_nacimiento(vaso);
-              ad.guardar(A);
-        }else{
+              
+              Alumno alumno = ad.buscarDni(D);
+              
+              if(alumno != null){
+                  ad.actualizarAlumno(A);
+              }else{
+                  ad.guardar(A);
+              }
+            
+              
+              }else{
+               
                JOptionPane.showMessageDialog(null, "solo caracteres");
                
            }
