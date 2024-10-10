@@ -4,6 +4,13 @@
  */
 package Vista;
 
+import Modelo.Alumno;
+import Persistencia.alumnoData;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.sql.Date;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -11,12 +18,15 @@ import javax.swing.JOptionPane;
  * @author carlo
  */
 public class AlumnosVista extends javax.swing.JInternalFrame {
-
+    private alumnoData ad;
+    
     /**
      * Creates new form Alumnos
      */
-    public AlumnosVista() {
+    public AlumnosVista() throws SQLException {
+       
         initComponents();
+        ad = new alumnoData();
     }
 
     /**
@@ -37,13 +47,13 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
         jTdni = new javax.swing.JTextField();
         jTapellido = new javax.swing.JTextField();
         jTnombre = new javax.swing.JTextField();
-        jRadioButton1 = new javax.swing.JRadioButton();
+        estado = new javax.swing.JRadioButton();
         jBnew = new javax.swing.JButton();
         jBdelete = new javax.swing.JButton();
         jBsave = new javax.swing.JButton();
         jBexit = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jDate = new com.toedter.calendar.JDateChooser();
+        JBuscar = new javax.swing.JButton();
+        Jtdate = new com.toedter.calendar.JDateChooser();
 
         jPanel1.setBackground(new java.awt.Color(95, 165, 25));
 
@@ -86,6 +96,11 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
         jBdelete.setForeground(new java.awt.Color(0, 0, 0));
         jBdelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8-delete-64.png"))); // NOI18N
         jBdelete.setText("Eliminar");
+        jBdelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBdeleteActionPerformed(evt);
+            }
+        });
 
         jBsave.setForeground(new java.awt.Color(0, 0, 0));
         jBsave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/check icon.png"))); // NOI18N
@@ -105,10 +120,15 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton5.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(0, 0, 0));
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon search.png"))); // NOI18N
-        jButton5.setText("Buscar");
+        JBuscar.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        JBuscar.setForeground(new java.awt.Color(0, 0, 0));
+        JBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon search.png"))); // NOI18N
+        JBuscar.setText("Buscar");
+        JBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -120,7 +140,7 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addGap(18, 18, 18)
-                        .addComponent(jDate, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Jtdate, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,10 +152,10 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jTdni, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
                             .addComponent(jTnombre, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jRadioButton1)
+                            .addComponent(estado)
                             .addComponent(jTapellido, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton5)
+                        .addComponent(JBuscar)
                         .addGap(47, 47, 47))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(143, 143, 143)
@@ -167,7 +187,7 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTdni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5))
+                    .addComponent(JBuscar))
                 .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -179,11 +199,11 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jRadioButton1))
+                    .addComponent(estado))
                 .addGap(42, 42, 42)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
-                    .addComponent(jDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Jtdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBnew)
@@ -208,7 +228,28 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBsaveActionPerformed
-        // TODO add your handling code here:
+
+Alumno A = new Alumno();  
+        try { 
+           int D = Integer.parseInt(jTdni.getText());
+           String apellido = jTapellido.getText();
+           String nombre = jTnombre.getText();
+           if(apellido.matches("^[a-zA-Z]+$")&& nombre.matches("^[a-zA-Z]+$")){
+              boolean L = estado.isSelected();
+              LocalDate vaso = Jtdate.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+              A.setDni(D);
+              A.setApellido(apellido);
+              A.setNombre(nombre);
+              A.setEstado(isIcon);
+              A.setFecha_nacimiento(vaso);
+              ad.guardar(A);
+        }else{
+               JOptionPane.showMessageDialog(null, "solo caracteres");
+               
+           }
+           
+        } catch (NumberFormatException e) {
+        }
     }//GEN-LAST:event_jBsaveActionPerformed
 
     private void jBexitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBexitActionPerformed
@@ -224,14 +265,54 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
         JOptionPane.showMessageDialog(this, "Se limpiaron los campos");
     }//GEN-LAST:event_jBnewActionPerformed
 
+    private void jBdeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBdeleteActionPerformed
+        try {
+              int D = Integer.parseInt(jTdni.getText());
+              Alumno a = ad.buscarDni(D);
+              if (a != null ){
+              jTdni.setText(String.valueOf(a.getDni()));
+              jTapellido.setText(a.getApellido());
+              jTnombre.setText(a.getNombre());
+              estado.setSelected(a.isEstado());
+              Jtdate.setDate(Date.valueOf(a.getFecha_nacimiento()));
+              ad.bajaLogica(D);
+              
+              }
+        } catch (Exception e) {
+        }
+       
+    }//GEN-LAST:event_jBdeleteActionPerformed
+
+    private void JBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBuscarActionPerformed
+
+        try {
+           int D = Integer.parseInt(jTdni.getText());
+              Alumno a = ad.buscarDni(D);
+              if(a != null){
+                  String Nombre = a.getNombre();
+                  String Apellido = a.getApellido();
+                  jTnombre.setText(Nombre);
+                  jTapellido.setText(Apellido);
+                  estado.setSelected(a.isEstado());
+                  Jtdate.setDate(Date.valueOf(a.getFecha_nacimiento()));
+                  
+              }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error no se puede ingresar caracteres");
+        }
+                
+                       
+    }//GEN-LAST:event_JBuscarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton JBuscar;
+    private com.toedter.calendar.JDateChooser Jtdate;
+    private javax.swing.JRadioButton estado;
     private javax.swing.JButton jBdelete;
     private javax.swing.JButton jBexit;
     private javax.swing.JButton jBnew;
     private javax.swing.JButton jBsave;
-    private javax.swing.JButton jButton5;
-    private com.toedter.calendar.JDateChooser jDate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -239,7 +320,6 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField jTapellido;
     private javax.swing.JTextField jTdni;

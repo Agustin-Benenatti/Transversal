@@ -21,7 +21,7 @@ public class Transversal {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws SQLException {
-        
+   /*     
         Alumno a = new Alumno(42220800, "Benenatti", "Agustin", LocalDate.of(1999, 11, 9),true);
         Alumno b = new Alumno(27127089, "benenatti","Carlos",LocalDate.of(2003, 1, 20),true);
         Alumno c = new Alumno(27127080, "Flores","Emiliano",LocalDate.of(2000, 5, 10),true);
@@ -49,7 +49,20 @@ public class Transversal {
         System.out.println("El alumno ha sido dado de alta correctamente.");
         System.out.println("----------------------------------------------------");
         a1.eliminarAlumno(42220800);
-        System.out.println("El alumno se ha eliminado con exito!");
-    }
+        System.out.println("El alumno se ha eliminado con exito!");*/ 
+  
+    alumnoData alumno = new alumnoData();
+        for (Alumno alumnos : alumno.listaDeAlumnos()) {
+            System.out.println("dni: "+alumnos.getDni());
+            System.out.println("----------------------------------------------------");
+            System.out.println("apellido: "+alumnos.getApellido());
+            System.out.println("----------------------------------------------------");
+            System.out.println("nombre: "+alumnos.getNombre());
+            System.out.println("----------------------------------------------------");
+            System.out.println("fechaNacimiento: "+alumnos.getFecha_nacimiento());
+            System.out.println("----------------------------------------------------");
+            System.out.println("esatdo: "+alumnos.isEstado());
+        }
+       }
     
 }

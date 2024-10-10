@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.Date;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -159,6 +161,31 @@ public class alumnoData {
     
     }
     
-    
+    public List<Alumno> listaDeAlumnos(){
+        String sql = "SELECT dni, apellido, nombre, fecha_nacimiento, estado FROM alumno WHERE estado = 1";
+
+        ArrayList<Alumno> estudiantes = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = red.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+
+                Alumno alumno = new Alumno();
+                alumno.setDni(rs.getInt("dni"));
+                alumno.setApellido(rs.getString("apellido"));
+                alumno.setNombre(rs.getString("nombre"));
+                alumno.setFecha_nacimiento(rs.getDate("fecha_nacimiento").toLocalDate());
+                alumno.setEstado(rs.getBoolean("estado"));
+
+                estudiantes.add(alumno);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Alumno");
+        }
+        return estudiantes;
+    }
     
 }
