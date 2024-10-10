@@ -25,7 +25,7 @@ public class alumnoData {
     
     private Connection red = null;
     
-    public alumnoData() throws SQLException{
+    public alumnoData() {
         red = conecxion.getConexion();
     }
     
