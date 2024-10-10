@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 import java.sql.SQLException;
+import org.mariadb.jdbc.Statement;
 
 /**
  *
@@ -25,29 +26,26 @@ public class materiaData {
     
     public void guardarMateria (Materia m){
         
-        String sql = "INSERT INTO materia( nombre_materia, cuatrimestre, estado) VALUES (?,?,?)";
-        
-        try {
-            PreparedStatement ps = red.prepareStatement(sql);
-            
-            ps.setString(1, m.getNombre_materia());
-            ps.setString(2, m.getCuatrimestre());
-            ps.setBoolean(3, m.isEstado());
-            
-            ps.executeUpdate();
-            
-            ResultSet rs = ps.getGeneratedKeys();
-            
-            if(rs.next()){
-            m.setId_materia(rs.getInt(1));
-            
-            JOptionPane.showMessageDialog(null, "Se ha añadido una materia!");
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla materia ");
-        }
+    String sql = "INSERT INTO materia (id_materia, nombre_materia, cuatrimestre, estado) VALUES (?, ?, ?, ?)";
     
+    try {
+        PreparedStatement ps = red.prepareStatement(sql);
+        
+        ps.setInt(1, m.getId_materia());
+        ps.setString(2, m.getNombre_materia());
+        ps.setString(3, m.getCuatrimestre());
+        ps.setBoolean(4, m.isEstado());
+        
+        ps.executeUpdate();
+        JOptionPane.showMessageDialog(null, "Se añadió una nueva materia");
+    
+        
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al acceder a la tabla materia");
     }
+}
+    
+    
     
    public void actualizarMateria (Materia materia){
    
@@ -100,7 +98,7 @@ public class materiaData {
    
        Materia materia = null;
        
-       String sql = "SELECT nombre_materia, cuatrimestre, estado, FROM materia WHERE id_materia = ?";
+       String sql = "SELECT nombre_materia, cuatrimestre, estado FROM materia WHERE id_materia = ?";
        
        try {
            PreparedStatement ps = red.prepareStatement(sql);
@@ -110,8 +108,8 @@ public class materiaData {
            
            if(rs.next()){
                materia = new Materia();
-               materia.setNombre_materia(rs.getNString("nombre"));
-               materia.setCuatrimestre(rs.getNString("cuatrimestre"));
+               materia.setNombre_materia(rs.getString("nombre_materia"));
+               materia.setCuatrimestre(rs.getString("cuatrimestre"));
                materia.setEstado(rs.getBoolean("estado"));
            }else{
                JOptionPane.showMessageDialog(null, "No se encontro la materia");

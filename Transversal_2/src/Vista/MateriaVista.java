@@ -4,6 +4,8 @@
  */
 package Vista;
 
+import Modelo.Materia;
+import Persistencia.materiaData;
 import javax.swing.JOptionPane;
 
 /**
@@ -11,12 +13,14 @@ import javax.swing.JOptionPane;
  * @author carlo
  */
 public class MateriaVista extends javax.swing.JInternalFrame {
-
+    private materiaData md;
     /**
      * Creates new form MateriaVista
      */
     public MateriaVista() {
         initComponents();
+        md = new materiaData();
+        
     }
 
     /**
@@ -33,7 +37,7 @@ public class MateriaVista extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTcodigo = new javax.swing.JTextField();
+        jTid = new javax.swing.JTextField();
         jTnombre = new javax.swing.JTextField();
         jTcuatrimestre = new javax.swing.JTextField();
         jRestado = new javax.swing.JRadioButton();
@@ -41,7 +45,7 @@ public class MateriaVista extends javax.swing.JInternalFrame {
         jBdelete = new javax.swing.JButton();
         jBsave = new javax.swing.JButton();
         jBexit = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        JBbuscar = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(95, 165, 25));
 
@@ -86,11 +90,21 @@ public class MateriaVista extends javax.swing.JInternalFrame {
         jBdelete.setForeground(new java.awt.Color(0, 0, 0));
         jBdelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8-delete-64.png"))); // NOI18N
         jBdelete.setText("Eliminar");
+        jBdelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBdeleteActionPerformed(evt);
+            }
+        });
 
         jBsave.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jBsave.setForeground(new java.awt.Color(0, 0, 0));
         jBsave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/check icon.png"))); // NOI18N
         jBsave.setText("Guardar");
+        jBsave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBsaveActionPerformed(evt);
+            }
+        });
 
         jBexit.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jBexit.setForeground(new java.awt.Color(0, 0, 0));
@@ -102,10 +116,15 @@ public class MateriaVista extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton5.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(0, 0, 0));
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon search.png"))); // NOI18N
-        jButton5.setText("Buscar");
+        JBbuscar.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        JBbuscar.setForeground(new java.awt.Color(0, 0, 0));
+        JBbuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon search.png"))); // NOI18N
+        JBbuscar.setText("Buscar");
+        JBbuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBbuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -132,9 +151,9 @@ public class MateriaVista extends javax.swing.JInternalFrame {
                             .addGap(43, 43, 43)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jTnombre, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
-                                .addComponent(jTcodigo))
+                                .addComponent(jTid))
                             .addGap(88, 88, 88)
-                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(JBbuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(90, 90, 90))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -165,8 +184,8 @@ public class MateriaVista extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jTcodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton5))
+                            .addComponent(jTid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(JBbuscar))
                         .addGap(45, 45, 45)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
@@ -212,18 +231,82 @@ public class MateriaVista extends javax.swing.JInternalFrame {
 
     private void jBnewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBnewActionPerformed
         jTnombre.setText("");
-        jTcodigo.setText("");
+        jTid.setText("");
         jTcuatrimestre.setText("");
-        JOptionPane.showMessageDialog(this, "Se limpiaron los campos");
+        
     }//GEN-LAST:event_jBnewActionPerformed
+
+    private void jBsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBsaveActionPerformed
+        Materia m = new Materia();
+        
+        try {
+            int i = Integer.parseInt(jTid.getText());
+            String nombre = jTnombre.getText();
+            String cuatrimestre = jTcuatrimestre.getText();
+            
+            if(nombre.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$") && cuatrimestre.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$")){
+                boolean e = jRestado.isSelected();
+                m.setId_materia(i);
+                m.setNombre_materia(nombre);
+                m.setCuatrimestre(cuatrimestre);
+                m.setEstado(e);
+                md.guardarMateria(m);
+            }else{
+                JOptionPane.showMessageDialog(null, "Ingrese solo caracteres!");
+            }
+        } catch (NumberFormatException e) {
+        }
+        
+        
+    }//GEN-LAST:event_jBsaveActionPerformed
+
+    private void jBdeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBdeleteActionPerformed
+        
+        try {
+            int i = Integer.parseInt(jTid.getText());
+            Materia m = md.buscarMateria(i);
+            
+            if(m != null){
+                jTid.setText(String.valueOf(m.getId_materia()));
+                jTnombre.setText(m.getNombre_materia());
+                jTcuatrimestre.setText(m.getCuatrimestre());
+                jRestado.setSelected(m.isEstado());
+                md.bajaLogica(i);
+            }
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error!");
+        }
+        
+        
+    }//GEN-LAST:event_jBdeleteActionPerformed
+
+    private void JBbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBbuscarActionPerformed
+        try {
+            int i = Integer.parseInt(jTid.getText());
+            Materia m = md.buscarMateria(i);
+            
+            if(m != null){
+                String nombre = m.getNombre_materia();
+                String cuatrimestre = m.getCuatrimestre();
+                jTnombre.setText(nombre);
+                jTcuatrimestre.setText(cuatrimestre);
+                jRestado.setSelected(m.isEstado());
+                        
+            }
+               
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error!");
+        }
+    }//GEN-LAST:event_JBbuscarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton JBbuscar;
     private javax.swing.JButton jBdelete;
     private javax.swing.JButton jBexit;
     private javax.swing.JButton jBnew;
     private javax.swing.JButton jBsave;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -232,8 +315,8 @@ public class MateriaVista extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButton jRestado;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTcodigo;
     private javax.swing.JTextField jTcuatrimestre;
+    private javax.swing.JTextField jTid;
     private javax.swing.JTextField jTnombre;
     // End of variables declaration//GEN-END:variables
 }
