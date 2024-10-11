@@ -139,7 +139,7 @@ public class VistasProyecto extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         escritorio.removeAll();
         escritorio.repaint();
-        AlumnosVista mmateria = new AlumnosVista ();
+        AlumnosVista mmateria = new AlumnosVista();
         mmateria.setVisible(true);
         escritorio.add(mmateria);
         escritorio.moveToFront(mmateria);

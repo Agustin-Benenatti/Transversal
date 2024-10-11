@@ -23,7 +23,8 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
     /**
      * Creates new form Alumnos
      */
-    public AlumnosVista() throws SQLException {
+    public AlumnosVista()
+    {
        
         initComponents();
         ad = new alumnoData();
@@ -290,7 +291,8 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
               ad.bajaLogica(D);
               
               }
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error");
         }
        
     }//GEN-LAST:event_jBdeleteActionPerformed

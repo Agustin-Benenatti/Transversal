@@ -5,7 +5,9 @@
 package Vista;
 
 import Modelo.Alumno;
+import Modelo.Materia;
 import Persistencia.alumnoData;
+import Persistencia.materiaData;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
@@ -51,18 +53,28 @@ public class Transversal {
         a1.eliminarAlumno(42220800);
         System.out.println("El alumno se ha eliminado con exito!");*/ 
   
-    alumnoData alumno = new alumnoData();
-        for (Alumno alumnos : alumno.listaDeAlumnos()) {
-            System.out.println("dni: "+alumnos.getDni());
-            System.out.println("----------------------------------------------------");
-            System.out.println("apellido: "+alumnos.getApellido());
-            System.out.println("----------------------------------------------------");
-            System.out.println("nombre: "+alumnos.getNombre());
-            System.out.println("----------------------------------------------------");
-            System.out.println("fechaNacimiento: "+alumnos.getFecha_nacimiento());
-            System.out.println("----------------------------------------------------");
-            System.out.println("esatdo: "+alumnos.isEstado());
-        }
+//    alumnoData alumno = new alumnoData();
+//        for (Alumno alumnos : alumno.listaDeAlumnos()) {
+//            System.out.println("dni: "+alumnos.getDni());
+//            System.out.println("----------------------------------------------------");
+//            System.out.println("apellido: "+alumnos.getApellido());
+//            System.out.println("----------------------------------------------------");
+//            System.out.println("nombre: "+alumnos.getNombre());
+//            System.out.println("----------------------------------------------------");
+//            System.out.println("fechaNacimiento: "+alumnos.getFecha_nacimiento());
+//            System.out.println("----------------------------------------------------");
+//            System.out.println("esatdo: "+alumnos.isEstado());
+//        }
+//        
+
+        Materia m = new Materia(200, "cs", "2do cuatrimestre", true);
+        
+        materiaData md =new materiaData();
+        
+        md.guardarMateria(m);
+        
+        System.out.println(m);
+        
        }
     
 }
