@@ -105,6 +105,37 @@ public class alumnoData {
     return alumno;
     }
     
+    public Alumno buscarId (int id){
+      
+        
+          String sql="SELECT dni, apellido, nombre, fecha_nacimiento FROM alumno WHERE id_alumno = ? AND estado = 1";
+
+        Alumno alumno= null;
+        try {
+            PreparedStatement ps=red.prepareStatement(sql);
+
+            ps.setInt(1, id);
+            ResultSet rs=ps.executeQuery();
+            if(rs.next()){
+                alumno=new Alumno();
+                alumno.setId_alumno(id);
+                alumno.setDni(rs.getInt("dni"));
+                alumno.setApellido(rs.getString("apellido"));
+                alumno.setNombre(rs.getString("nombre"));
+                alumno.setFecha_nacimiento(rs.getDate("fecha_nacimiento").toLocalDate());
+                alumno.setEstado(true);
+
+
+            }
+            ps.close();
+
+        } catch (SQLException ex) {
+             JOptionPane.showMessageDialog(null, "Error al acceder a la tabla  alumno ");
+        }
+
+        return alumno;
+     }
+    
     public void bajaLogica (int dni){
     
         String sql = "UPDATE alumno SET estado= 0 WHERE dni = ? ";

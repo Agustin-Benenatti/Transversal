@@ -5,8 +5,10 @@
 package Vista;
 
 import Modelo.Alumno;
+import Modelo.Inscripcion;
 import Modelo.Materia;
 import Persistencia.alumnoData;
+import Persistencia.inscripcionData;
 import Persistencia.materiaData;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -23,35 +25,35 @@ public class Transversal {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws SQLException {
-   /*     
-        Alumno a = new Alumno(42220800, "Benenatti", "Agustin", LocalDate.of(1999, 11, 9),true);
-        Alumno b = new Alumno(27127089, "benenatti","Carlos",LocalDate.of(2003, 1, 20),true);
-        Alumno c = new Alumno(27127080, "Flores","Emiliano",LocalDate.of(2000, 5, 10),true);
-        Alumno d = new Alumno(27127085, "Jofre","Dylan",LocalDate.of(2002, 4, 18),true);
-        
+//       
+//        Alumno a = new Alumno(42220800, "Benenatti", "Agustin", LocalDate.of(1999, 11, 9),true);
+//        Alumno b = new Alumno(27127089, "benenatti","Carlos",LocalDate.of(2003, 1, 20),true);
+//        Alumno c = new Alumno(27127080, "Flores","Emiliano",LocalDate.of(2000, 5, 10),true);
+//        Alumno d = new Alumno(27127085, "Jofre","Dylan",LocalDate.of(2002, 4, 18),true);
+//        
         //NO SE PUEDE GUARDAR UN ALUMNO CON EL MISMO NRO DE DNI QUE OTRO! 
-        alumnoData a1 = new alumnoData();
-        a1.guardar(a);
-        System.out.println("El alumno ha sido guardado con exito. " + a);
-        System.out.println("----------------------------------------------------");
-       a1.guardar(b);
-        System.out.println("El alumno ha sido guardado con exito. "+ b);
-        System.out.println("----------------------------------------------------");
-       a1.guardar(c);
-        System.out.println("El alumno ha sido guardado con exito. "+c);
-        System.out.println("----------------------------------------------------");
-       a1.guardar(d);
-        System.out.println("El alumno ha sido guardado con exito. "+d);
-        System.out.println("----------------------------------------------------");
-        
-        a1.bajaLogica(42220800);
-        System.out.println("El alumno ha sido dado de baja correctamente.");
-        System.out.println("----------------------------------------------------");
-        a1.altaLogica(42220800);
-        System.out.println("El alumno ha sido dado de alta correctamente.");
-        System.out.println("----------------------------------------------------");
-        a1.eliminarAlumno(42220800);
-        System.out.println("El alumno se ha eliminado con exito!");*/ 
+//        alumnoData a1 = new alumnoData();
+//        a1.guardar(a);
+//        System.out.println("El alumno ha sido guardado con exito. " + a);
+//        System.out.println("----------------------------------------------------");
+//       a1.guardar(b);
+//        System.out.println("El alumno ha sido guardado con exito. "+ b);
+//        System.out.println("----------------------------------------------------");
+//       a1.guardar(c);
+//        System.out.println("El alumno ha sido guardado con exito. "+c);
+//        System.out.println("----------------------------------------------------");
+//       a1.guardar(d);
+//        System.out.println("El alumno ha sido guardado con exito. "+d);
+//        System.out.println("----------------------------------------------------");
+//        
+//        a1.bajaLogica(42220800);
+//        System.out.println("El alumno ha sido dado de baja correctamente.");
+//        System.out.println("----------------------------------------------------");
+//        a1.altaLogica(42220800);
+//        System.out.println("El alumno ha sido dado de alta correctamente.");
+//        System.out.println("----------------------------------------------------");
+//        a1.eliminarAlumno(42220800);
+//        System.out.println("El alumno se ha eliminado con exito!");
   
 //    alumnoData alumno = new alumnoData();
 //        for (Alumno alumnos : alumno.listaDeAlumnos()) {
@@ -67,13 +69,16 @@ public class Transversal {
 //        }
 //        
 
-        Materia m = new Materia(200, "cs", "2do cuatrimestre", true);
-        
-        materiaData md =new materiaData();
-        
-        md.guardarMateria(m);
-        
-        System.out.println(m);
+
+ // CREAMOS UNA NUEVA INSCRIPCION 
+   alumnoData aD = new alumnoData();
+   materiaData md = new materiaData();
+    inscripcionData id = new inscripcionData();
+    Alumno a = aD.buscarId(33);
+    Materia m =md.buscarMateria(1);
+  
+    Inscripcion i = new Inscripcion(a,m,8);
+    id.guardarInscripcion(i);
         
        }
     

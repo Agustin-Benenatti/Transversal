@@ -98,7 +98,7 @@ public class materiaData {
    
        Materia materia = null;
        
-       String sql = "SELECT nombre_materia, cuatrimestre, estado FROM materia WHERE id_materia = ?";
+       String sql = "SELECT id_materia,nombre_materia, cuatrimestre, estado FROM materia WHERE id_materia = ?";
        
        try {
            PreparedStatement ps = red.prepareStatement(sql);
@@ -108,9 +108,11 @@ public class materiaData {
            
            if(rs.next()){
                materia = new Materia();
+               materia.setId_materia(rs.getInt("id_materia"));
                materia.setNombre_materia(rs.getString("nombre_materia"));
                materia.setCuatrimestre(rs.getString("cuatrimestre"));
                materia.setEstado(rs.getBoolean("estado"));
+               JOptionPane.showMessageDialog(null, "Materia encontrada");
            }else{
                JOptionPane.showMessageDialog(null, "No se encontro la materia");
            
