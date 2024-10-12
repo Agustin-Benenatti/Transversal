@@ -212,6 +212,7 @@ public class alumnoData {
 
                 estudiantes.add(alumno);
             }
+            ps.close();
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Alumno");

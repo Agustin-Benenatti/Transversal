@@ -71,15 +71,25 @@ public class Transversal {
 
 
  // CREAMOS UNA NUEVA INSCRIPCION 
-   alumnoData aD = new alumnoData();
-   materiaData md = new materiaData();
-    inscripcionData id = new inscripcionData();
-    Alumno a = aD.buscarId(33);
-    Materia m =md.buscarMateria(1);
+    alumnoData aD = new alumnoData();
+    materiaData md = new materiaData();
+    inscripcionData insc = new inscripcionData();
+    Alumno a = aD.buscarId(32);
+    Materia m =md.buscarMateria(3);
+    insc.actualizarNota(32, 3, 10);
   
-    Inscripcion i = new Inscripcion(a,m,8);
-    id.guardarInscripcion(i);
+   //Inscripcion i = new Inscripcion(a,m,8);
+//    id.guardarInscripcion(i);
         
-       }
+    //BUSCAMOS LA LISTA DE INSCRIPCIONES
+//    inscripcionData id = new inscripcionData();
+//    for (Inscripcion inscripcion : id.obtenerInscripciones()){
+//        System.out.println("id: "+inscripcion.getId_inscripcion());
+//        System.out.println("apeliddo: "+ inscripcion.getAlumno().getApellido());
+//        System.out.println("materia: "+ inscripcion.getMateria().getNombre_materia());
+//        System.out.println("nota: "+ inscripcion.getNota());
+//    }
+//       }
     
+    }
 }
