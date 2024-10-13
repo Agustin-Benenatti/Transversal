@@ -57,14 +57,14 @@ public class alumnoData {
     
     public void actualizarAlumno (Alumno alumno){
         
-        String sql = "UPDATE alumno SET  apellido= ? , nombre= ? ,fecha_nacimiento= ?,estado= ? WHERE dni ?";
+        String sql = "UPDATE alumno SET  apellido = ? , nombre = ? ,fecha_nacimiento = ?,estado = ? WHERE dni = ?";
         
         try {
             PreparedStatement ps = red.prepareStatement(sql);
             ps.setString(1, alumno.getApellido());
             ps.setString(2, alumno.getNombre());
             ps.setDate(3, Date.valueOf(alumno.getFecha_nacimiento()));
-            ps.setBoolean(4, true);
+            ps.setBoolean(4, alumno.isEstado());
             ps.setInt(5, alumno.getDni());
             
             int i = ps.executeUpdate();
@@ -76,6 +76,7 @@ public class alumnoData {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "No se pudo acceder a la tabla alumnos");
         }
+
         
     }
     
@@ -96,7 +97,7 @@ public class alumnoData {
                     alumno.setFecha_nacimiento(rs.getDate("fecha_nacimiento").toLocalDate());
                     alumno.setEstado(rs.getBoolean("estado"));
             }else{
-                JOptionPane.showMessageDialog(null, "No se encontro el alumno.");
+                //JOptionPane.showMessageDialog(null, "No se encontro el alumno.");
             }
                     
         } catch (SQLException e) {

@@ -71,12 +71,12 @@ public class Transversal {
 
 
  // CREAMOS UNA NUEVA INSCRIPCION 
-    alumnoData aD = new alumnoData();
-    materiaData md = new materiaData();
-    inscripcionData insc = new inscripcionData();
-    Alumno a = aD.buscarId(32);
-    Materia m =md.buscarMateria(3);
-    insc.actualizarNota(32, 3, 10);
+//    alumnoData aD = new alumnoData();
+//    materiaData md = new materiaData();
+//    inscripcionData insc = new inscripcionData();
+//    Alumno a = aD.buscarId(32);
+//    Materia m =md.buscarMateria(3);
+//    insc.actualizarNota(32, 3, 10);
   
    //Inscripcion i = new Inscripcion(a,m,8);
 //    id.guardarInscripcion(i);

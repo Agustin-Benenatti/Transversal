@@ -7,9 +7,10 @@ package Vista;
 import Modelo.Alumno;
 import Persistencia.alumnoData;
 import java.sql.SQLException;
-import java.time.LocalDate;
+
 import java.time.ZoneId;
 import java.sql.Date;
+import java.time.LocalDate;
 
 import javax.swing.JOptionPane;
 
@@ -48,13 +49,13 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
         jTdni = new javax.swing.JTextField();
         jTapellido = new javax.swing.JTextField();
         jTnombre = new javax.swing.JTextField();
-        estado = new javax.swing.JRadioButton();
+        jrestado = new javax.swing.JRadioButton();
         jBnew = new javax.swing.JButton();
         jBdelete = new javax.swing.JButton();
         jBsave = new javax.swing.JButton();
         jBexit = new javax.swing.JButton();
         JBuscar = new javax.swing.JButton();
-        Jtdate = new com.toedter.calendar.JDateChooser();
+        jdcFecha = new com.toedter.calendar.JDateChooser();
 
         jPanel1.setBackground(new java.awt.Color(95, 165, 25));
 
@@ -141,7 +142,7 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addGap(18, 18, 18)
-                        .addComponent(Jtdate, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jdcFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,7 +154,7 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jTdni, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
                             .addComponent(jTnombre, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(estado)
+                            .addComponent(jrestado)
                             .addComponent(jTapellido, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(JBuscar)
@@ -200,11 +201,11 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(estado))
+                    .addComponent(jrestado))
                 .addGap(42, 42, 42)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
-                    .addComponent(Jtdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jdcFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBnew)
@@ -230,36 +231,35 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
 
     private void jBsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBsaveActionPerformed
 
-       Alumno A = new Alumno();  
+        Alumno alumno = new Alumno();
+        
         try { 
-           int D = Integer.parseInt(jTdni.getText());
-           Alumno alu = ad.buscarDni(D);
-           String apellido = jTapellido.getText();
-           String nombre = jTnombre.getText();
-           if(apellido.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$")&& nombre.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$")){
-              boolean L = estado.isSelected();
-              LocalDate vaso = Jtdate.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                  
-              A.setDni(D);
-              A.setApellido(apellido);
-              A.setNombre(nombre);
-              A.setEstado(L);
-              A.setFecha_nacimiento(vaso);
-              
-              Alumno alumno = ad.buscarDni(D);
-              
-              if(alumno != null){
-                  ad.actualizarAlumno(A);
-              }else{
-                  ad.guardar(A);
-              }
             
-              
-              }else{
-               
-               JOptionPane.showMessageDialog(null, "solo caracteres");
-               
-           }
+            int dni = Integer.parseInt(jTdni.getText());
+            String apellido = jTapellido.getText();
+            String nombre = jTnombre.getText();
+           
+            
+            
+            if(apellido.matches("^[a-zA-Z ]+$") && nombre.matches("^[a-zA-Z ]+$")){
+                LocalDate fecha = jdcFecha.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                boolean estado = jrestado.isSelected();
+                
+                alumno.setDni(dni);
+                alumno.setApellido(apellido);
+                alumno.setNombre(nombre);
+                alumno.setFecha_nacimiento(fecha);
+                alumno.setEstado(estado);
+                
+                Alumno a = ad.buscarDni(dni);
+                
+                if(a != null){
+                    ad.actualizarAlumno(alumno);
+                }else{
+                    ad.guardar(alumno);
+                }
+                
+            }
            
         } catch (NumberFormatException e) {
         }
@@ -286,8 +286,8 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
               jTdni.setText(String.valueOf(a.getDni()));
               jTapellido.setText(a.getApellido());
               jTnombre.setText(a.getNombre());
-              estado.setSelected(a.isEstado());
-              Jtdate.setDate(Date.valueOf(a.getFecha_nacimiento()));
+              jrestado.setSelected(a.isEstado());
+              jdcFecha.setDate(Date.valueOf(a.getFecha_nacimiento()));
               ad.bajaLogica(D);
               
               }
@@ -307,8 +307,8 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
                   String Apellido = a.getApellido();
                   jTnombre.setText(Nombre);
                   jTapellido.setText(Apellido);
-                  estado.setSelected(a.isEstado());
-                  Jtdate.setDate(Date.valueOf(a.getFecha_nacimiento()));
+                  jrestado.setSelected(a.isEstado());
+                  jdcFecha.setDate(Date.valueOf(a.getFecha_nacimiento()));
                   
               }
         } catch (NumberFormatException e) {
@@ -321,8 +321,6 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton JBuscar;
-    private com.toedter.calendar.JDateChooser Jtdate;
-    private javax.swing.JRadioButton estado;
     private javax.swing.JButton jBdelete;
     private javax.swing.JButton jBexit;
     private javax.swing.JButton jBnew;
@@ -338,5 +336,7 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTapellido;
     private javax.swing.JTextField jTdni;
     private javax.swing.JTextField jTnombre;
+    private com.toedter.calendar.JDateChooser jdcFecha;
+    private javax.swing.JRadioButton jrestado;
     // End of variables declaration//GEN-END:variables
 }
