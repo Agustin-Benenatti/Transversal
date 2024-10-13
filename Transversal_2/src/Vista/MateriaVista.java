@@ -241,32 +241,32 @@ public class MateriaVista extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBnewActionPerformed
 
     private void jBsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBsaveActionPerformed
-        Materia m = new Materia();
+        
 
         try {
-            int i = Integer.parseInt(jTid.getText());
+         
             String nombre = jTnombre.getText();
             String cuatrimestre = jTcuatrimestre.getText();
 
-            if (nombre.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$") && cuatrimestre.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$")) {
+            if (nombre.matches("^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]+$") && cuatrimestre.matches("^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]+$")) {
                 boolean e = jRestado.isSelected();
-                m.setId_materia(i);
-                m.setNombre_materia(nombre);
-                m.setCuatrimestre(cuatrimestre);
-                m.setEstado(e);
-
-                Materia mat = md.buscarMateria(i);
+               
+                Materia mat = md.buscarMateriaNom(nombre);
 
                 if (mat != null) {
-                    md.actualizarMateria(m);
+                    mat.setCuatrimestre(cuatrimestre);
+                   mat.setEstado(e);
+                    md.actualizarMateria(mat);
                 } else {
-
+                   Materia m = new Materia();
+                   m.setNombre_materia(nombre);
+                   m.setEstado(e);
+                   m.setCuatrimestre(cuatrimestre);
                     md.guardarMateria(m);
                 }
 
-            } else {
-                JOptionPane.showMessageDialog(null, "Ingrese solo caracteres!");
-            }
+            } 
+            
         } catch (NumberFormatException e) {
         }
 
@@ -284,7 +284,9 @@ public class MateriaVista extends javax.swing.JInternalFrame {
                 jTnombre.setText(m.getNombre_materia());
                 jTcuatrimestre.setText(m.getCuatrimestre());
                 jRestado.setSelected(m.isEstado());
-                md.bajaLogica(i);
+                md.eliminarMateria(i);
+                
+                JOptionPane.showMessageDialog(null, "Se ha eliminado la materia exitosamente");
             }
 
         } catch (NumberFormatException e) {
@@ -296,16 +298,19 @@ public class MateriaVista extends javax.swing.JInternalFrame {
 
     private void JBbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBbuscarActionPerformed
         try {
-            int i = Integer.parseInt(jTid.getText());
-            Materia m = md.buscarMateria(i);
+            String nombre =jTnombre.getText();
+            Materia m = md.buscarMateriaNom(nombre);
 
             if (m != null) {
-                String nombre = m.getNombre_materia();
+                int idmateria = m.getId_materia();
                 String cuatrimestre = m.getCuatrimestre();
+                jTid.setText(String.valueOf(idmateria));
                 jTnombre.setText(nombre);
                 jTcuatrimestre.setText(cuatrimestre);
                 jRestado.setSelected(m.isEstado());
 
+            }else{
+                JOptionPane.showMessageDialog(null, "La materia no se encontro!");
             }
 
         } catch (NumberFormatException e) {

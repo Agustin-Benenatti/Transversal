@@ -142,7 +142,7 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addGap(18, 18, 18)
-                        .addComponent(jdcFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jdcFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,7 +241,7 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
            
             
             
-            if(apellido.matches("^[a-zA-Z ]+$") && nombre.matches("^[a-zA-Z ]+$")){
+            if(apellido.matches("^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]+$") && nombre.matches("^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]+$")){
                 LocalDate fecha = jdcFecha.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 boolean estado = jrestado.isSelected();
                 
