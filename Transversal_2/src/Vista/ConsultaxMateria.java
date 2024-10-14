@@ -4,17 +4,24 @@
  */
 package Vista;
 
+import Modelo.Alumno;
+import Persistencia.alumnoData;
+import java.util.List;
+
 /**
  *
  * @author carlo
  */
 public class ConsultaxMateria extends javax.swing.JInternalFrame {
-
+private alumnoData ad;
     /**
      * Creates new form ConsultaxMateria
      */
     public ConsultaxMateria() {
         initComponents();
+        ad = new alumnoData();
+        ncombobox();
+        llenarcombo();
     }
 
     /**
@@ -28,7 +35,7 @@ public class ConsultaxMateria extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jCinscripcion = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
@@ -101,7 +108,7 @@ public class ConsultaxMateria extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(37, 37, 37)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jCinscripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jRadioButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -141,7 +148,7 @@ public class ConsultaxMateria extends javax.swing.JInternalFrame {
                 .addGap(14, 14, 14)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jCinscripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(56, 56, 56)
                 .addComponent(jLabel3)
                 .addGap(42, 42, 42)
@@ -184,7 +191,7 @@ public class ConsultaxMateria extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jCinscripcion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -195,4 +202,22 @@ public class ConsultaxMateria extends javax.swing.JInternalFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
+    private void ncombobox() {
+       jCinscripcion.addItem("DNI");
+       jCinscripcion.addItem("Nombre");
+       jCinscripcion.addItem("Apellido"); 
+    }
+    public void llenarcombo() {
+        jCinscripcion.removeAllItems();
+
+        List<Alumno> listaAlumnos = ad.listaDeAlumnos();
+
+        for (Alumno alumno : listaAlumnos) {
+
+            jCinscripcion.addItem(alumno.getDni() + ", " + alumno.getNombre()+ ", " + alumno.getApellido());
+        }
+
+    }
 }
+
