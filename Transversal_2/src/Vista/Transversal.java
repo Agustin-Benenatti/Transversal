@@ -5,10 +5,10 @@
 package Vista;
 
 import Modelo.Alumno;
-import Modelo.Inscripcion;
+
 import Modelo.Materia;
 import Persistencia.alumnoData;
-import Persistencia.inscripcionData;
+
 import Persistencia.materiaData;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -66,6 +66,34 @@ public class Transversal {
 //            System.out.println("fechaNacimiento: "+alumnos.getFecha_nacimiento());
 //            System.out.println("----------------------------------------------------");
 //            System.out.println("esatdo: "+alumnos.isEstado());
+//        }
+//        
+
+//Materia m = new Materia("Ingles","Primer Cuatrimestre",true);
+//materiaData md =new materiaData();
+//
+//md.guardarMateria(m);
+//        System.out.println(m);
+//        
+//        md.bajaLogica(406);
+//        System.out.println("La materia " +m+ "  se dio de baja");
+//        System.out.println("-------------------------------------");
+//        md.altaLogica(406);
+//        System.out.println("La materia " +m+ "  se dio de alta");
+//        System.out.println("-------------------------------------");
+//        md.buscarMateria(406);
+//        System.out.println("Se encontro la materia!");
+//        System.out.println("-------------------------------------");
+//        md.eliminarMateria(406);
+//        System.out.println("Materia Eliminada Exitosamente!");
+//        System.out.println("-------------------------------------");
+//        
+//        for (Materia materias : md.listaDeMaterias()) {
+//            System.out.println("nombre " +materias.getNombre_materia());
+//            System.out.println("estado "+materias.isEstado());
+//            System.out.println("cuatrimestre "+materias.getCuatrimestre());
+//            System.out.println("-------------------------------------");
+//            
 //        }
 //        
 

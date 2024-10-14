@@ -4,6 +4,9 @@
  */
 package Modelo;
 
+import Modelo.Alumno;
+import Modelo.Materia;
+
 /**
  *
  * @author aguse

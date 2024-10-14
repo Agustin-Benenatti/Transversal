@@ -70,7 +70,7 @@ public class alumnoData {
             int i = ps.executeUpdate();
             
             if( i == 1){
-                JOptionPane.showMessageDialog(null, "Se han modificado con exito  los datos del alumno.");
+//                JOptionPane.showMessageDialog(null, "Se han modificado con exito  los datos del alumno.");
             }
           
         } catch (SQLException e) {
@@ -194,7 +194,7 @@ public class alumnoData {
     }
     
     public List<Alumno> listaDeAlumnos(){
-        String sql = "SELECT dni, apellido, nombre, fecha_nacimiento, estado FROM alumno WHERE estado = 1";
+        String sql = "SELECT id_alumno, dni, apellido, nombre, fecha_nacimiento, estado FROM alumno ";
 
         ArrayList<Alumno> estudiantes = new ArrayList<>();
 
@@ -205,6 +205,7 @@ public class alumnoData {
             while(rs.next()){
 
                 Alumno alumno = new Alumno();
+                alumno.setId_alumno(rs.getInt("id_alumno"));
                 alumno.setDni(rs.getInt("dni"));
                 alumno.setApellido(rs.getString("apellido"));
                 alumno.setNombre(rs.getString("nombre"));

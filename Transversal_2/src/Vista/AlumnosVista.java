@@ -7,12 +7,15 @@ package Vista;
 import Modelo.Alumno;
 import Persistencia.alumnoData;
 import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
 
 import java.time.ZoneId;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -20,6 +23,9 @@ import javax.swing.JOptionPane;
  */
 public class AlumnosVista extends javax.swing.JInternalFrame {
     private alumnoData ad;
+    private DefaultTableModel tabla;
+    
+    
     
     /**
      * Creates new form Alumnos
@@ -29,6 +35,10 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
        
         initComponents();
         ad = new alumnoData();
+        tabla = new DefaultTableModel();
+        tablaDeAlumnos();
+        llenarTabla();
+        
     }
 
     /**
@@ -57,7 +67,7 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
         JBuscar = new javax.swing.JButton();
         jdcFecha = new com.toedter.calendar.JDateChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable = new javax.swing.JTable();
 
         jPanel1.setBackground(new java.awt.Color(95, 165, 25));
 
@@ -134,7 +144,7 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -145,7 +155,7 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTable);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -308,8 +318,10 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
 
                 if(a != null){
                     ad.actualizarAlumno(alumno);
+                    JOptionPane.showMessageDialog(null, "Alumno modificado "+a.getApellido()+" "+a.getNombre());
                 }else{
                     ad.guardar(alumno);
+                    JOptionPane.showMessageDialog(null, "Se ha agregado al alumno:  "+a.getApellido()+" "+a.getNombre());
                 }
 
             }
@@ -360,11 +372,38 @@ public class AlumnosVista extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable;
     private javax.swing.JTextField jTapellido;
     private javax.swing.JTextField jTdni;
     private javax.swing.JTextField jTnombre;
     private com.toedter.calendar.JDateChooser jdcFecha;
     private javax.swing.JRadioButton jrestado;
     // End of variables declaration//GEN-END:variables
+
+    public void tablaDeAlumnos(){
+     tabla.addColumn("id");
+     tabla.addColumn("nombre");
+     tabla.addColumn("apellido");
+     tabla.addColumn("Fecha Nac");
+     tabla.addColumn("estado");
+     
+     jTable.setModel(tabla);
+     
+    }
+    
+    public void llenarTabla(){
+        List<Alumno> a = ad.listaDeAlumnos();
+        for (Alumno alumno : a) {
+            tabla.addRow(new Object[]{
+            alumno.getId_alumno(),
+                alumno.getNombre(),
+                alumno.getApellido(),
+                alumno.getFecha_nacimiento(),
+                alumno.isEstado()
+            });
+            
+        }
+    
+    }
+
 }
