@@ -60,6 +60,11 @@ private DefaultTableModel tabla;
         jLabel2.setText("Seleccione una materia:");
 
         jCmateria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jCmateria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCmateriaActionPerformed(evt);
+            }
+        });
 
         jCalumnos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -88,10 +93,6 @@ private DefaultTableModel tabla;
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(97, 97, 97))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -106,10 +107,15 @@ private DefaultTableModel tabla;
                         .addGap(17, 17, 17)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(21, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(82, 82, 82))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(97, 97, 97))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addGap(82, 82, 82))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,6 +154,10 @@ private DefaultTableModel tabla;
         System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jCmateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCmateriaActionPerformed
+       
+    }//GEN-LAST:event_jCmateriaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
@@ -166,7 +176,7 @@ private DefaultTableModel tabla;
         jCmateria.addItem("Estado");
     }
     public void llenarcombo(){
-        jCmateria.removeAllItems();
+    jCmateria.removeAllItems();
 
         if (md != null) {
             List<Materia> listaMateria = md.listaDeMaterias();
@@ -174,7 +184,8 @@ private DefaultTableModel tabla;
             for (Materia materia : listaMateria) {
                 jCmateria.addItem(materia.getNombre_materia() + ", " + materia.getCuatrimestre());
             }
-        }
+          
+}
     }
 
     private void tablaDeAlumnos() {
@@ -197,7 +208,9 @@ private DefaultTableModel tabla;
             
         }
     }
+    
 }
+
     
     
 

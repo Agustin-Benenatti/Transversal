@@ -221,5 +221,34 @@ public class alumnoData {
         }
         return estudiantes;
     }
-    
+     public List<Alumno> obtenerAlumnosPorMateria(int idMateria) {
+        ArrayList<Alumno> alumnos = new ArrayList<>();
+
+        String sql = "SELECT a.id_alumno, dni, apellido, nombre, fecha_nacimiento, estado " +
+                     "FROM inscripcion i, alumno a WHERE i.id_alumno = a.id_alumno AND id_materia = ?";
+        
+        try {
+            PreparedStatement ps = red.prepareCall(sql);
+            ps.setInt(1, idMateria);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Alumno a = new Alumno();
+                a.setId_alumno(rs.getInt("id_alumno"));
+                a.setDni(rs.getInt("dni"));
+                a.setApellido(rs.getString("apellido"));
+                a.setNombre(rs.getString("nombre"));
+                a.setFecha_nacimiento(rs.getDate("fecha_nacimiento").toLocalDate());
+                a.setEstado(rs.getBoolean("estado"));
+
+                alumnos.add(a);
+            }
+            ps.close();
+        } catch (SQLException e) {
+            JOptionPane.showConfirmDialog(null, "Error al conectar a la tabla inscripcion");
+        }
+        return alumnos;    
+    }
 }
+    
+

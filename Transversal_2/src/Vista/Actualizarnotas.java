@@ -10,6 +10,7 @@ import Modelo.Materia;
 import Persistencia.alumnoData;
 import Persistencia.inscripcionData;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 
@@ -31,7 +32,6 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
         initComponents();
         ad = new alumnoData();
         id = new inscripcionData();
-        
         llenarcombo();
         armarTabla();
     }
@@ -49,8 +49,8 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jCalumnos = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jbGardar = new javax.swing.JButton();
+        Tabla = new javax.swing.JTable();
+        jbGuardar = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(95, 165, 25));
@@ -69,7 +69,7 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        Tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -80,12 +80,17 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(Tabla);
 
-        jbGardar.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jbGardar.setForeground(new java.awt.Color(0, 0, 0));
-        jbGardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/check icon.png"))); // NOI18N
-        jbGardar.setText("Guardar");
+        jbGuardar.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jbGuardar.setForeground(new java.awt.Color(0, 0, 0));
+        jbGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/check icon.png"))); // NOI18N
+        jbGuardar.setText("Guardar");
+        jbGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbGuardarActionPerformed(evt);
+            }
+        });
 
         jButton2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(0, 0, 0));
@@ -120,7 +125,7 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
                 .addContainerGap(19, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(57, 57, 57)
-                .addComponent(jbGardar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jbGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(59, 59, 59))
@@ -140,7 +145,7 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbGardar)
+                    .addComponent(jbGuardar)
                     .addComponent(jButton2))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
@@ -184,8 +189,33 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
     }
     }//GEN-LAST:event_jCalumnosActionPerformed
 
+    private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
+         int filaSeleccionada = Tabla.getSelectedRow();
+
+        if (filaSeleccionada != -1) {
+            try {
+                Alumno alumnoSeleccionado = ad.listaDeAlumnos().get(jCalumnos.getSelectedIndex());
+                int idAlumno = alumnoSeleccionado.getId_alumno();
+
+                int idMateria = Integer.parseInt(Tabla.getValueAt(filaSeleccionada, 0).toString());
+                double nota = Double.parseDouble(Tabla.getValueAt(filaSeleccionada, 2).toString());
+
+                id.actualizarNota(idAlumno, idMateria, nota);
+
+                jCalumnosActionPerformed(null);
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Error: Verifique que los datos ingresados sean correctos.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para actualizar.");
+    }
+
+    }//GEN-LAST:event_jbGuardarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable Tabla;
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jCalumnos;
     private javax.swing.JLabel jLabel1;
@@ -193,8 +223,7 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JButton jbGardar;
+    private javax.swing.JButton jbGuardar;
     // End of variables declaration//GEN-END:variables
 
 
@@ -213,6 +242,6 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
         modelo.addColumn("codigo");
         modelo.addColumn("nombre");
         modelo.addColumn("nota");
-        jTable1.setModel(modelo);
+        Tabla.setModel(modelo);
     }
 }
