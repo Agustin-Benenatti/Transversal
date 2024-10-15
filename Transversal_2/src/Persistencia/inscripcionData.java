@@ -113,6 +113,152 @@ public class inscripcionData {
                 JOptionPane.showMessageDialog(null, "Error al accceder a la tabla inscripcion");
             }
         }
+        
+         public List<Inscripcion> obtenerInscripcionesPorAlumno(int idalumno){
+        
+            String sql = "SELECT * FROM inscripcion WHERE id_alumno = ?";
+                    
+            ArrayList<Inscripcion> cursada = new ArrayList<>();
+            
+            try {
+                PreparedStatement ps = red.prepareStatement(sql);
+                ps.setInt(1, idalumno);
+                ResultSet rs = ps.executeQuery();
+                
+                while(rs.next()){
+                    
+                    Inscripcion insc =new Inscripcion();
+                    insc.setId_inscripcion(rs.getInt("id_inscripcion"));
+                    Alumno alu = ad.buscarId(rs.getInt("id_alumno"));
+                    Materia m = md.buscarMateria(rs.getInt("id_materia"));
+                    insc.setAlumno(alu);
+                    insc.setMateria(m);
+                    insc.setNota(rs.getDouble("nota"));
+                    
+                    cursada.add(insc);
+                    
+                    
+                }
+                ps.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Error al conectar con la tabla inscripcion");
+            }
+            return cursada;
+            
+        }
+         
+         public List<Materia> obtenerMateriasCursadas(int idalumno){
+         
+             ArrayList<Materia> materias = new ArrayList();
+             
+             String sql = "SELECT inscripcion.id_materia, nombre_materia , cuatrimestre FROM inscripcion," +" materia WHERE inscripcion.id_materia = materia.id_materia"+ "AND inscripcion.id_alumno = ?;";
+             
+             try {
+                 PreparedStatement ps = red.prepareStatement(sql);
+                 ps.setInt(1, idalumno);
+                 ResultSet rs = ps.executeQuery();
+                 
+                 while(rs.next()){
+                 
+                     Materia m = new Materia();
+                     
+                     m.setId_materia(rs.getInt("id_materia"));
+                     m.setNombre_materia(rs.getString("nombre_materia"));
+                     m.setCuatrimestre(rs.getString("cuatrimestre"));
+                     materias.add(m);
+                     
+                 }
+                 ps.close();
+             } catch (SQLException e) {
+                 JOptionPane.showConfirmDialog(null, "Error al conectar a la tabla inscripcion");
+             }
+             return materias;
+         }
+         
+         public List<Materia> obtenerMateriasNoCursadas(int idalumno){
+             
+             ArrayList<Materia> materias = new ArrayList();
+             
+             String sql = "SELECT * FROM materia WHERE estado = 1 AND id_materia not in " + "(SELECT id_materia FROM inscripcion WHERE id_alumno = ?)";
+             
+             try {
+                 PreparedStatement ps = red.prepareStatement(sql);
+                 ps.setInt(1, idalumno);
+                 ResultSet rs = ps.executeQuery();
+                 
+                 while(rs.next()){
+                 
+                     Materia m = new Materia();
+                     
+                     m.setId_materia(rs.getInt("id_materia"));
+                     m.setNombre_materia(rs.getString("nombre_materia"));
+                     m.setCuatrimestre(rs.getString("cuatrimestre"));
+                     materias.add(m);
+                     
+                 }
+                 ps.close();
+             } catch (SQLException e) {
+                 JOptionPane.showConfirmDialog(null, "Error al conectar a la tabla inscripcion");
+             }
+             
+             return materias;
+         }
+         
+         public List<Alumno> obtenerAlumnosPorMateria(int idmateria){
+             ArrayList<Alumno> alumnos = new ArrayList();
+             
+             String sql = "SELECT a.id_alumno, dni, apellido,nombre, fecha_nacimiento, estado " + "FROM inscripcion i, alumno a WHERE i.id_alumno = a.id_alumno AND id_materia = ?";
+             
+             try {
+                  PreparedStatement ps = red.prepareCall(sql);
+                  
+                  ps.setInt(1, idmateria);
+                  ResultSet rs = ps.executeQuery();
+                  
+                  while(rs.next()){
+                  Alumno a = new Alumno();
+                  a.setId_alumno(rs.getInt("id_alumno"));
+                  a.setDni(rs.getInt("dni"));
+                  a.setApellido(rs.getString("apellido"));
+                  a.setNombre(rs.getString("nombre"));
+                  a.setFecha_nacimiento(rs.getDate("fecha_nacimiento").toLocalDate());
+                  a.setEstado(rs.getBoolean("estado"));
+                  
+                  alumnos.add(a);
+                  }
+                  ps.close();
+                 
+             } catch (SQLException e) {
+                  JOptionPane.showConfirmDialog(null, "Error al conectar a la tabla inscripcion");
+                 
+             }
+         return alumnos;    
+         
+         }
+         
+         public void borrarInscripcion(int idalumno, int idmateria){
+             
+             String sql = "DELATE FROM inscripcion WHERE id_alumno = ? AND id_materia = ?";
+             
+             try {
+                 PreparedStatement ps = red.prepareStatement(sql);
+                 ps.setInt(1, idalumno);
+                 ps.setInt(2, idmateria);
+                 
+                 int i = ps.executeUpdate();
+                 
+                 if( i == 1){
+                     JOptionPane.showMessageDialog(null, "Inscripcion borrada con exito!");
+                 }
+                 ps.close();
+                 
+                 
+             } catch (SQLException e) {
+                 
+                 JOptionPane.showMessageDialog(null, "Error al acceder a la tabla inscripcion!");
+                 
+             }
+         }
 }
         
     
