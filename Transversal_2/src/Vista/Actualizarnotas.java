@@ -5,16 +5,23 @@
 package Vista;
 
 import Modelo.Alumno;
+import Modelo.Materia;
 import Persistencia.alumnoData;
+import Persistencia.inscripcionData;
 import java.util.List;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author carlo
  */
 public class Actualizarnotas extends javax.swing.JInternalFrame {
+    
+    private DefaultTableModel modelo = new DefaultTableModel(); 
 
     private alumnoData ad;
+    private inscripcionData id;
 
     /**
      * Creates new form Actualizarnotas
@@ -22,8 +29,9 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
     public Actualizarnotas() {
         initComponents();
         ad = new alumnoData();
-        ncombobox();
+        
         llenarcombo();
+        armarTabla();
     }
 
     /**
@@ -40,7 +48,7 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
         jCalumnos = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        jbGardar = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(95, 165, 25));
@@ -53,7 +61,11 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Seleccione un alumno:");
 
-        jCalumnos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jCalumnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCalumnosActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -68,10 +80,10 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jButton1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/check icon.png"))); // NOI18N
-        jButton1.setText("Guardar");
+        jbGardar.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jbGardar.setForeground(new java.awt.Color(0, 0, 0));
+        jbGardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/check icon.png"))); // NOI18N
+        jbGardar.setText("Guardar");
 
         jButton2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(0, 0, 0));
@@ -106,7 +118,7 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
                 .addContainerGap(19, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(57, 57, 57)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jbGardar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(59, 59, 59))
@@ -126,7 +138,7 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(jbGardar)
                     .addComponent(jButton2))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
@@ -150,9 +162,25 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
         System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jCalumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCalumnosActionPerformed
+        // TODO add your handling code here:
+         int select = jCalumnos.getSelectedIndex();
+    if (select >= 0) {
+        Alumno alumno = ad.listaDeAlumnos().get(select);
+        List<Materia> materias = id.obtenerMateriasCursadas(alumno.getId_alumno());
+
+        modelo.setRowCount(0);
+        for (Materia materia : materias) {
+            modelo.addRow(new Object[]{
+                materia.getId_materia(), 
+                materia.getNombre_materia(),
+            });
+        }
+    }
+    }//GEN-LAST:event_jCalumnosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jCalumnos;
     private javax.swing.JLabel jLabel1;
@@ -161,23 +189,25 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton jbGardar;
     // End of variables declaration//GEN-END:variables
 
-    private void ncombobox() {
-        jCalumnos.addItem("DNI");
-        jCalumnos.addItem("Nombre");
-        jCalumnos.addItem("Apellido");
-    }
 
     public void llenarcombo() {
-        jCalumnos.removeAllItems();
 
         List<Alumno> listaAlumnos = ad.listaDeAlumnos();
 
         for (Alumno alumno : listaAlumnos) {
 
-            jCalumnos.addItem(alumno.getDni() + ", " + alumno.getNombre()+ ", " + alumno.getApellido());
+            jCalumnos.addItem(alumno.getApellido()+ " " + alumno.getNombre());
         }
 
+    }
+    
+    private void armarTabla(){
+        modelo.addColumn("codigo");
+        modelo.addColumn("nombre");
+        modelo.addColumn("nota");
+        jTable1.setModel(modelo);
     }
 }
