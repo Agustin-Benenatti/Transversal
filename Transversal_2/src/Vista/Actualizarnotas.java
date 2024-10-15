@@ -5,6 +5,7 @@
 package Vista;
 
 import Modelo.Alumno;
+import Modelo.Inscripcion;
 import Modelo.Materia;
 import Persistencia.alumnoData;
 import Persistencia.inscripcionData;
@@ -29,6 +30,7 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
     public Actualizarnotas() {
         initComponents();
         ad = new alumnoData();
+        id = new inscripcionData();
         
         llenarcombo();
         armarTabla();
@@ -163,17 +165,20 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jCalumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCalumnosActionPerformed
-        // TODO add your handling code here:
-         int select = jCalumnos.getSelectedIndex();
+   int select = jCalumnos.getSelectedIndex();
     if (select >= 0) {
         Alumno alumno = ad.listaDeAlumnos().get(select);
-        List<Materia> materias = id.obtenerMateriasCursadas(alumno.getId_alumno());
+        List<Inscripcion> inscripciones = id.obtenerMateriasCursadas(alumno);
 
-        modelo.setRowCount(0);
-        for (Materia materia : materias) {
+        modelo.setRowCount(0); // Limpiar la tabla
+
+        // Llenar la tabla con las materias, cuatrimestres y notas
+        for (Inscripcion inscripcion : inscripciones) {
             modelo.addRow(new Object[]{
-                materia.getId_materia(), 
-                materia.getNombre_materia(),
+                inscripcion.getMateria().getId_materia(),
+                inscripcion.getMateria().getNombre_materia(),
+                
+                inscripcion.getNota()  
             });
         }
     }
