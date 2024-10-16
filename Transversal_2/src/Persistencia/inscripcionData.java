@@ -141,7 +141,7 @@ public class inscripcionData {
                 }
                 ps.close();
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Error al conectar con la tabla inscripcion");
+                
             }
             return cursada;
             
@@ -253,7 +253,7 @@ public class inscripcionData {
              String sql = "SELECT a.id_alumno, dni, apellido,nombre, fecha_nacimiento, estado " + "FROM inscripcion i, alumno a WHERE i.id_alumno = a.id_alumno AND id_materia = ?";
              
              try {
-                  PreparedStatement ps = red.prepareCall(sql);
+                  PreparedStatement ps = red.prepareStatement(sql);
                   
                   ps.setInt(1, idmateria);
                   ResultSet rs = ps.executeQuery();
@@ -272,7 +272,6 @@ public class inscripcionData {
                   ps.close();
                  
              } catch (SQLException e) {
-                  JOptionPane.showConfirmDialog(null, "Error al conectar a la tabla inscripcion");
                  
              }
          return alumnos;    

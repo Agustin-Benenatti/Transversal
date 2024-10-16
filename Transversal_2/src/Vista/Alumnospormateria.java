@@ -7,9 +7,11 @@ package Vista;
 import Modelo.Alumno;
 import Modelo.Materia;
 import Persistencia.alumnoData;
+import Persistencia.inscripcionData;
 import Persistencia.materiaData;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+
 
 /**
  *
@@ -19,6 +21,7 @@ public class Alumnospormateria extends javax.swing.JInternalFrame {
 private materiaData md;
 private alumnoData ad;
 private DefaultTableModel tabla;
+private inscripcionData inscData;
     /**
      * Creates new form Actualizarnotas
      */
@@ -27,10 +30,10 @@ private DefaultTableModel tabla;
     ad = new alumnoData();
     md = new materiaData();
     tabla = new DefaultTableModel();
+    inscData = new inscripcionData();
     tablaDeAlumnos();  
     jCalumnos.setModel(tabla); 
     llenarcombo();
-    llenarTabla();
     }
 
     /**
@@ -155,7 +158,22 @@ private DefaultTableModel tabla;
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jCmateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCmateriaActionPerformed
-       
+      int i = jCmateria.getSelectedIndex();
+       if(i >= 0){
+           Materia m = md.listaDeMaterias().get(i);
+
+           List<Alumno> alumnos = inscData.obtenerAlumnosPorMateria(m.getId_materia());
+           tabla.setRowCount(0);
+           for (Alumno alumno : alumnos) {
+               tabla.addRow(new Object[]{
+                   alumno.getId_alumno(),
+                   alumno.getApellido(),
+                   alumno.getNombre(),
+                   alumno.getFecha_nacimiento(),
+                   alumno.isEstado()});
+
+           }
+       } 
     }//GEN-LAST:event_jCmateriaActionPerformed
 
 
@@ -188,27 +206,14 @@ private DefaultTableModel tabla;
 }
     }
 
-    private void tablaDeAlumnos() {
-     tabla.addColumn("ID");
-     tabla.addColumn("Nombre");
-     tabla.addColumn("Apellido");
-     tabla.addColumn("Fecha Nacimiento");
-     tabla.addColumn("Estado");
+   private void tablaDeAlumnos() {
+    tabla.addColumn("ID");
+    tabla.addColumn("Nombre");
+    tabla.addColumn("Apellido");
+    tabla.addColumn("Fecha Nacimiento");
+    tabla.addColumn("Estado");
     }
-    public void llenarTabla(){
-        List<Alumno> a = ad.listaDeAlumnos();
-        for (Alumno alumno : a) {
-            tabla.addRow(new Object[]{
-            alumno.getId_alumno(),
-                alumno.getNombre(),
-                alumno.getApellido(),
-                alumno.getFecha_nacimiento(),
-                alumno.isEstado()
-            });
-            
-        }
-    }
-    
+  
 }
 
     
