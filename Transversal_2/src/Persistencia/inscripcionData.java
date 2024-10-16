@@ -281,7 +281,7 @@ public class inscripcionData {
          
          public void borrarInscripcion(int idalumno, int idmateria){
              
-             String sql = "DELATE FROM inscripcion WHERE id_alumno = ? AND id_materia = ?";
+             String sql = "DELETE FROM inscripcion WHERE id_alumno = ? AND id_materia = ?";
              
              try {
                  PreparedStatement ps = red.prepareStatement(sql);
@@ -291,7 +291,7 @@ public class inscripcionData {
                  int i = ps.executeUpdate();
                  
                  if( i == 1){
-                     JOptionPane.showMessageDialog(null, "Inscripcion borrada con exito!");
+                     JOptionPane.showMessageDialog(null, "Inscripcion anulada con exito!");
                  }
                  ps.close();
                  
