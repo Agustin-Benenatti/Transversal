@@ -5,8 +5,14 @@
 package Vista;
 
 import Modelo.Alumno;
+import Modelo.Inscripcion;
+import Modelo.Materia;
 import Persistencia.alumnoData;
+import Persistencia.inscripcionData;
+import Persistencia.materiaData;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -14,14 +20,31 @@ import java.util.List;
  */
 public class ConsultaxMateria extends javax.swing.JInternalFrame {
 private alumnoData ad;
+private DefaultTableModel modelo;
+private ArrayList<Materia> materias;
+private ArrayList<Alumno> alumnos;
+private inscripcionData inscData;
+
+private materiaData md;
     /**
      * Creates new form ConsultaxMateria
      */
     public ConsultaxMateria() {
         initComponents();
         ad = new alumnoData();
+        modelo = new DefaultTableModel();
+        alumnos = (ArrayList<Alumno>)ad.listaDeAlumnos();
+        inscData = new inscripcionData();
+        md = new materiaData();
+        modelo.setRowCount(0);
+        Tabla.setModel(modelo);
+        
+        
+        
         ncombobox();
         llenarcombo();
+        armarTabla();
+        
     }
 
     /**
@@ -37,10 +60,10 @@ private alumnoData ad;
         jSeparator1 = new javax.swing.JSeparator();
         jCinscripcion = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        jRinscriptas = new javax.swing.JRadioButton();
+        jRNoinscriptas = new javax.swing.JRadioButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        Tabla = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -61,22 +84,32 @@ private alumnoData ad;
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Listado de Materias");
 
-        jRadioButton1.setText("Materias Inscriptas");
+        jRinscriptas.setText("Materias Inscriptas");
+        jRinscriptas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRinscriptasActionPerformed(evt);
+            }
+        });
 
-        jRadioButton2.setText("Materias no inscriptas");
+        jRNoinscriptas.setText("Materias no inscriptas");
+        jRNoinscriptas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRNoinscriptasActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        Tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "ID", "NOMBRE", "CUATRIMESTRE"
+
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(Tabla);
 
         jButton1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(0, 0, 0));
@@ -110,9 +143,9 @@ private alumnoData ad;
                         .addGap(37, 37, 37)
                         .addComponent(jCinscripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jRadioButton1)
+                        .addComponent(jRinscriptas)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jRadioButton2)
+                        .addComponent(jRNoinscriptas)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(49, 49, 49)
@@ -153,8 +186,8 @@ private alumnoData ad;
                 .addComponent(jLabel3)
                 .addGap(42, 42, 42)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
+                    .addComponent(jRinscriptas)
+                    .addComponent(jRNoinscriptas))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -186,8 +219,23 @@ private alumnoData ad;
         System.exit(0);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jRinscriptasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRinscriptasActionPerformed
+       borrarFilas();
+        materiasInscriptas();
+        jRNoinscriptas.setSelected(false);
+        
+    }//GEN-LAST:event_jRinscriptasActionPerformed
+
+    private void jRNoinscriptasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRNoinscriptasActionPerformed
+        borrarFilas();
+        materiasNoInscriptas();
+        jRinscriptas.setSelected(false);
+        
+    }//GEN-LAST:event_jRNoinscriptasActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable Tabla;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -196,11 +244,10 @@ private alumnoData ad;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JRadioButton jRNoinscriptas;
+    private javax.swing.JRadioButton jRinscriptas;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 
     private void ncombobox() {
@@ -215,9 +262,72 @@ private alumnoData ad;
 
         for (Alumno alumno : listaAlumnos) {
 
-            jCinscripcion.addItem(alumno.getDni() + ", " + alumno.getNombre()+ ", " + alumno.getApellido());
+            jCinscripcion.addItem(alumno.getDni() + ", " + alumno.getNombre()+ " " + alumno.getApellido());
         }
 
     }
-}
+    
+    private void armarTabla(){
+        modelo.addColumn("ID");
+        modelo.addColumn("NOMBRE");
+        modelo.addColumn("CUATRIMESTRE");
+        Tabla.setModel(modelo);
+    }
+    
+    private void materiasInscriptas() {
+        int a = jCinscripcion.getSelectedIndex();
 
+        if (a >= 0) {
+            Alumno alumno = alumnos.get(a);
+
+            List<Inscripcion> lista = inscData.obtenerMateriasCursadas(alumno);
+            
+            modelo.setRowCount(0);
+
+            for (Inscripcion inscripcion : lista) {
+                Materia materia = inscripcion.getMateria();
+            
+                modelo.addRow(new Object[]{
+                    materia.getId_materia(),
+                    materia.getNombre_materia(),
+                    materia.getCuatrimestre(),
+                    
+                });
+            }
+        } 
+
+    }
+    
+    private void materiasNoInscriptas(){
+        int a = jCinscripcion.getSelectedIndex();
+        
+        if (a >= 0 ){
+            Alumno alumno = alumnos.get(a);
+            
+            List<Materia> lista = inscData.obtenerMateriasNoCursadas(alumno.getId_alumno());
+            
+            modelo.setRowCount(0);
+            
+            for (Materia materia : lista) {
+                
+                 modelo.addRow(new Object[]{
+                    materia.getId_materia(),
+                    materia.getNombre_materia(),
+                    materia.getCuatrimestre(),
+                    
+                });
+                
+            }
+        }
+    
+    }
+    
+    private void borrarFilas(){
+        
+        int indice = modelo.getRowCount() -1 ;
+        
+        for(int i = indice; i>=0; i--){
+            modelo.removeRow(i);
+        }
+    }
+}

@@ -180,7 +180,7 @@ public class inscripcionData {
 //         }
          
          public List<Inscripcion> obtenerMateriasCursadas(Alumno alumno) {
-    ArrayList<Inscripcion> inscripciones = new ArrayList();
+            List<Inscripcion> inscripciones = new ArrayList<>();
 
     
     String sql = "SELECT inscripcion.id_inscripcion, inscripcion.id_materia, materia.nombre_materia, materia.cuatrimestre, inscripcion.nota " +

@@ -34,6 +34,9 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
         id = new inscripcionData();
         llenarcombo();
         armarTabla();
+        jCalumnos.setSelectedIndex(-1);
+        modelo.setRowCount(0);
+        Tabla.setModel(modelo);
     }
 
     /**
@@ -175,9 +178,9 @@ public class Actualizarnotas extends javax.swing.JInternalFrame {
         Alumno alumno = ad.listaDeAlumnos().get(select);
         List<Inscripcion> inscripciones = id.obtenerMateriasCursadas(alumno);
 
-        modelo.setRowCount(0); // Limpiar la tabla
+        modelo.setRowCount(0); 
 
-        // Llenar la tabla con las materias, cuatrimestres y notas
+        
         for (Inscripcion inscripcion : inscripciones) {
             modelo.addRow(new Object[]{
                 inscripcion.getMateria().getId_materia(),
